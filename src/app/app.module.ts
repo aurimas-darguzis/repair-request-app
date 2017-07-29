@@ -1,3 +1,4 @@
+import { environment } from './../environments/environment';
 import { AuthService } from './core/auth.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -9,13 +10,7 @@ import { UserLoginComponent } from './users/user-login/user-login.component';
 import { UserProfileComponent } from './users/user-profile/user-profile.component';
 import { AngularFireModule } from 'angularfire2';
 
-export const firebaseConfig = {
-  apiKey: '<your-key>',
-  authDomain: '<your-project-authdomain>',
-  databaseURL: '<your-database-url>',
-  storageBucket: '<your-storage-bucket>',
-  messagingSenderId: '<your-messaging-sender-id>'
-}
+export const firebaseConfig = environment.firebaseConfig;
 
 @NgModule({
   declarations: [
