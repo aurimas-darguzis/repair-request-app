@@ -1,21 +1,25 @@
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireAuth, AngularFireAuthProvider } from 'angularfire2/auth';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { Router } from '@angular/router';
+import * as firebase from 'firebase';
 import 'rxjs/add/operator/map';
 
 @Injectable()
 export class AuthService {
-  authState: any;
+  authState: any = null;
 
-  constructor(private http: Http,
+  constructor(private afAuth: AngularFireAuth,
+              private db: AngularFireDatabase,
+              private router: Router,
+              private http: Http,
               private af: AngularFireModule,
-              private db: AngularFireDatabase
   ) {
-    // af.auth.subscribe((auth) => {
-    //   this.authState = auth;
-    // });
+    this.afAuth.authState.subscribe((auth) => {
+      this.authState = auth;
+    });
    }
 
   // Returns true if user is logged in
@@ -28,8 +32,105 @@ export class AuthService {
     return this.authenticated ? this.authState.auth : null;
   }
 
+  // Returns
+  get currentUserObservable(): any {
+    return this.afAuth.authState;
+  }
+
   // Returns current user UID
-  // TODO:
+  get currentUserId(): string {
+    return this.authenticated ? this.authState.uid : '';
+  }
+
+  // Anonymous User
+  get currentUserAnonymous(): boolean {
+    return this.authenticated ? this.authState.isAnonymous : false;
+  }
+
+  // Returns current user display name or Guest
+  get currentUserDisplayName(): string {
+    if (!this.authState) { return 'Guest'; }
+    else if (this.currentUserAnonymous) { return 'Anonymouse'; }
+    else { return this.authState['displayName'] || 'User without a Name'; }
+  }
+
+  //// Social Auth ////
+
+  githubLogin() {
+    const provider = new firebase.auth.GithubAuthProvider();
+    return this.socialSignIn(provider);
+  }
+
+  googleLogin() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    return this.socialSignIn(provider);
+  }
+
+  facebookLogin() {
+    const provider = new firebase.auth.FacebookAuthProvider();
+    return this.socialSignIn(provider);
+  }
+
+  twitterLogin() {
+    const provider = new firebase.auth.TwitterAuthProvider();
+    return this.socialSignIn(provider);
+  }
+
+  private socialSignIn(provider) {
+    return this.afAuth.auth.signInWithPopup(provider)
+      .then((credential) => {
+        this.authState = credential.user;
+        this.updateUserData();
+      })
+      .catch(error => console.error(error));
+  }
+
+  //// Anonymous Auth ////
+
+  anonymousLogin() {
+    return this.afAuth.auth.signInAnonymously()
+      .then((user) => {
+        this.authState = user;
+        this.updateUserData();
+      })
+      .catch(error => console.error(error));
+  }
+
+  //// Email/Password Auth ////
+
+  emailSignUp(email: string, password: string) {
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+      .then((user) => {
+        this.authState = user;
+        this.updateUserData();
+      })
+      .catch(error => console.error(error));
+  }
+
+  emailLogin(email: string, password: string) {
+    return this.afAuth.auth.signInWithEmailAndPassword(email, password)
+      .then((user) => {
+        this.authState = user;
+        this.updateUserData();
+      })
+      .catch(error => console.error(error));
+  }
+
+  // Sends email allowing user to reset password
+  resetPassword(email: string) {
+    const auth = firebase.auth();
+
+    return auth.sendPasswordResetEmail(email)
+      .then(() => console.log('email sent'))
+      .catch((error) => console.error(error));
+  }
+
+
+/*
+  signOut(): void {
+    this.afAuth.auth.signOut();
+    this.router.navigate(['/']);
+  }
 
   getProfile(userName: string) {
     return this.http
@@ -51,6 +152,19 @@ export class AuthService {
       )
       .map((response: Response) => response.text());
   }
+*/
+  //// Helpers ////
 
+  private updateUserData(): void {
+    // Writes user name and email to realtime db
+    // useful if your app displays information about users or for admin features
+    const path = `users/${this.currentUserId}`; // Endpoint on firebase
+    const data = {
+      email: this.authState.email,
+      name: this.authState.displayName
+    };
 
+    this.db.object(path).update(data)
+      .catch(error => console.error(error));
+  }
 }
