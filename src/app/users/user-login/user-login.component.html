@@ -1,3 +1,15 @@
 <p>
   user-login works!
 </p>
+
+<div *ngIf="!auth.currentUser; else alreadyLoggedIn">
+  <button (click)="signInWithGoogle()" type="button">Connect Google</button>
+  <button (click)="signInWithGithub()" type="button">Connect Github</button>
+  <button (click)="signInWithFacebook()" type="button">Connect Facebook</button>
+  <button (click)="signInWithTwitter()" type="button">Connect Twitter</button>
+
+
+  <ng-template #alreadyLoggedIn>
+    already logged in
+  </ng-template>
+</div>

@@ -19,6 +19,7 @@ export class AuthService {
   ) {
     this.afAuth.authState.subscribe((auth) => {
       this.authState = auth;
+      console.log('auth service', auth);
     });
    }
 
@@ -153,6 +154,14 @@ export class AuthService {
       .map((response: Response) => response.text());
   }
 */
+
+  //// Sign Out ////
+
+  signOut(): void {
+    this.afAuth.auth.signOut();
+    this.router.navigate(['/']);
+  }
+
   //// Helpers ////
 
   private updateUserData(): void {

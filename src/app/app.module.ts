@@ -1,3 +1,5 @@
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 import { environment } from './../environments/environment';
 import { AuthService } from './core/auth.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -27,6 +29,10 @@ export const firebaseConfig = environment.firebaseConfig;
   providers: [
     AuthService,
     HttpModule,
+    AngularFireDatabaseModule,
+    AngularFireModule,
+    AngularFireAuth,
+    AngularFireDatabase
   ],
   bootstrap: [AppComponent]
 })
