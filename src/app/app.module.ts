@@ -1,5 +1,3 @@
-import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 import { environment } from './../environments/environment';
 import { AuthService } from './core/auth.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -10,6 +8,9 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { UserLoginComponent } from './users/user-login/user-login.component';
 import { UserProfileComponent } from './users/user-profile/user-profile.component';
+
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
 
 export const firebaseConfig = environment.firebaseConfig;
@@ -24,15 +25,13 @@ export const firebaseConfig = environment.firebaseConfig;
     BrowserModule,
     FormsModule,
     HttpModule,
-    AngularFireModule.initializeApp(firebaseConfig)
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
   providers: [
     AuthService,
-    HttpModule,
-    AngularFireDatabaseModule,
-    AngularFireModule,
-    AngularFireAuth,
-    AngularFireDatabase
+    HttpModule
   ],
   bootstrap: [AppComponent]
 })

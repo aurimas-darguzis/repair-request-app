@@ -1,9 +1,10 @@
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
+
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
-import { Router } from '@angular/router';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+
 import * as firebase from 'firebase';
 import 'rxjs/add/operator/map';
 
@@ -12,14 +13,10 @@ export class AuthService {
   authState: any = null;
 
   constructor(private afAuth: AngularFireAuth,
-              private db: AngularFireDatabase,
-              private router: Router,
-              private http: Http,
-              private af: AngularFireModule,
+              private db: AngularFireDatabase
   ) {
     this.afAuth.authState.subscribe((auth) => {
       this.authState = auth;
-      console.log('auth service', auth);
     });
    }
 
@@ -159,7 +156,7 @@ export class AuthService {
 
   signOut(): void {
     this.afAuth.auth.signOut();
-    this.router.navigate(['/']);
+    // this.router.navigate(['/']);
   }
 
   //// Helpers ////

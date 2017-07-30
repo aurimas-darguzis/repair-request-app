@@ -1,4 +1,3 @@
-import { Router } from '@angular/router';
 import { AuthService } from './../../core/auth.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,9 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-login.component.css']
 })
 export class UserLoginComponent implements OnInit {
+  title = 'user-login component';
 
   constructor(private auth: AuthService,
-              private router: Router) { }
+              ) { }
 
   ngOnInit() {
   }
@@ -41,6 +41,6 @@ export class UserLoginComponent implements OnInit {
   }
 
   private afterSignIn(): void {
-    this.router.navigate(['/']);
+    // this.router.navigate(['/']);
   }
 }

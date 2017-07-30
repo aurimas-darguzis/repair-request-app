@@ -6,10 +6,11 @@
 export const environment = {
   production: false,
   firebaseConfig: {
-    apiKey: '<your-key>',
-    authDomain: '<your-project-authdomain>',
-    databaseURL: '<your-database-url>',
-    storageBucket: '<your-storage-bucket>',
-    messagingSenderId: '<your-messaging-sender-id>'
+    apiKey: 'AIzaSyC7QjsoUbUGQo9a4rc0AuTfCOrqtZtKqls',
+    authDomain: 'repair-request-app-7a0fc.firebaseapp.com',
+    databaseURL: 'https://repair-request-app-7a0fc.firebaseio.com',
+    projectId: 'repair-request-app-7a0fc',
+    storageBucket: 'repair-request-app-7a0fc.appspot.com',
+    messagingSenderId: '544627246914'
   }
 };
