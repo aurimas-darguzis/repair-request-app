@@ -9,8 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class UserProfileComponent implements OnInit {
   title = 'user-profile component';
 
-  constructor(private auth: AuthService) {
-    console.log(this.auth);
+  constructor(public auth: AuthService) {
   }
 
   ngOnInit() {

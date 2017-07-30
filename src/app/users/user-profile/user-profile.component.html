@@ -4,7 +4,7 @@
 
 <!-- User logged in  -->
  <div *ngIf="auth.currentUser">
-    <h3>Hello, {{ auth.currentUser.auth.displayName }}</h3>
+    <h3>Hello, {{ auth.currentUserDisplayName }}</h3>
     <img [src]="auth.currentUser.photoURL || 'https://api.adorable.io/avatar/109/fire.png'" alt="avatar" width="50px">
 </div> 
     <button (click)="logout()" type="button">Logout</button>

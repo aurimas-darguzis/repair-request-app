@@ -27,7 +27,7 @@ export class AuthService {
 
   // Returns current user
   get currentUser(): any {
-    return this.authenticated ? this.authState.auth : null;
+    return this.authenticated ? this.authState : null;
   }
 
   // Returns
@@ -47,9 +47,13 @@ export class AuthService {
 
   // Returns current user display name or Guest
   get currentUserDisplayName(): string {
-    if (!this.authState) { return 'Guest'; }
-    else if (this.currentUserAnonymous) { return 'Anonymouse'; }
-    else { return this.authState['displayName'] || 'User without a Name'; }
+    if (!this.authState) {
+      return 'Guest';
+    } else if (this.currentUserAnonymous) {
+      return 'Anonymous';
+    } else {
+      return this.authState['displayName'] || 'User without a Name';
+    }
   }
 
   //// Social Auth ////
