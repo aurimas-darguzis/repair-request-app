@@ -1,5 +1,5 @@
+import { CoreModule } from './core/core-module.module';
 import { environment } from './../environments/environment';
-import { AuthService } from './core/auth.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +13,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
 
+
 export const firebaseConfig = environment.firebaseConfig;
 
 @NgModule({
@@ -25,12 +26,12 @@ export const firebaseConfig = environment.firebaseConfig;
     BrowserModule,
     FormsModule,
     HttpModule,
+    CoreModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule
   ],
   providers: [
-    AuthService,
     HttpModule
   ],
   bootstrap: [AppComponent]
