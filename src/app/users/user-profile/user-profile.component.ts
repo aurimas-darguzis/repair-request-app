@@ -18,5 +18,4 @@ export class UserProfileComponent implements OnInit {
   logout() {
     this.auth.signOut();
   }
-
 }
